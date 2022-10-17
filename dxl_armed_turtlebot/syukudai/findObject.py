@@ -21,8 +21,8 @@ class track_box_to_cmd_vel:
         area = msg.rect.size.width * msg.rect.size.height
         rospy.loginfo("area = {}, center = ({}, {})".format(
             area, msg.rect.center.x, msg.rect.center.y))
-        if area > 100 * 100:  # 認識結果面積が一定値以上のときは rect に登録
-            self.rect = msg
+        # if area > 100 * 100:  # 認識結果面積が一定値以上のときは rect に登録
+        self.rect = msg # 探索の為にareaによらず rect に登録
 
     def loop(self):
         rate = rospy.Rate(10)
@@ -36,6 +36,7 @@ class track_box_to_cmd_vel:
                     cmd_vel.angular.z = 0.1
                 else:
                     cmd_vel.angular.z = -0.1
+
             rospy.loginfo("\t\t\t\t\t\tpublish {}".format(cmd_vel.angular.z))
             self.pub.publish(cmd_vel)
             rate.sleep()
